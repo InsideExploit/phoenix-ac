@@ -1,0 +1,45 @@
+# dependencies
+node_modules/
+
+# build outputs
+dist/
+.next/
+out/
+build/
+x64/
+Release/
+Debug/
+ipch/
+*.user
+*.suo
+.vs/
+
+# env (never commit secrets)
+.env
+.env.local
+.env.remote
+.env.*
+!.env.example
+
+# shipped binaries / release artifacts
+**/artifacts/
+releases/
+*.exe
+*.sys
+*.msi
+*.pdb
+*.zip
+*.dll
+
+# tls private material
+**/private.pem
+
+# logs and caches
+*.log
+npm-debug.log*
+.turbo
+*.tsbuildinfo
+
+# os
+.DS_Store
+Thumbs.db
