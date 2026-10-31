@@ -1,0 +1,46 @@
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider    = %ManufacturerName%
+CatalogFile = PhoenixDrv.cat
+DriverVer = 07/08/2026,18.12.18.735
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+PhoenixDrv.sys = 1,,
+
+[Manufacturer]
+%ManufacturerName% = Standard,NTamd64.10.0...16299
+
+[Standard.NTamd64.10.0...16299]
+%PhoenixDrv.DeviceDesc% = PhoenixDrv_Device, Root\PhoenixDrv
+
+[PhoenixDrv_Device.NT]
+CopyFiles = File_Copy
+
+[File_Copy]
+PhoenixDrv.sys
+
+[PhoenixDrv_Device.NT.Services]
+AddService = PhoenixDrv,%SPSVCINST_ASSOCSERVICE%, PhoenixDrv_Service_Inst
+
+[PhoenixDrv_Service_Inst]
+DisplayName    = %PhoenixDrv.SVCDESC%
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\PhoenixDrv.sys
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ManufacturerName       = "Enveart Di Ferrara Mauro"
+DiskName               = "Phoenix Driver Installation Disk"
+PhoenixDrv.DeviceDesc  = "Phoenix Kernel Guard"
+PhoenixDrv.SVCDESC     = "Phoenix Kernel Guard"

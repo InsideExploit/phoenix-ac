@@ -1,0 +1,125 @@
+[data-phoenix-dashboard] {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.975 0 0);
+  --card: oklch(0.17 0 0);
+  --card-foreground: oklch(0.975 0 0);
+  --popover: oklch(0.18 0 0);
+  --popover-foreground: oklch(0.975 0 0);
+  --primary: oklch(0.72 0.19 40);
+  --primary-foreground: oklch(0.13 0 0);
+  --secondary: oklch(0.215 0 0);
+  --secondary-foreground: oklch(0.975 0 0);
+  --muted: oklch(0.195 0 0);
+  --muted-foreground: oklch(0.65 0 0);
+  --accent: oklch(0.235 0 0);
+  --accent-foreground: oklch(0.975 0 0);
+  --destructive: oklch(0.7 0.19 22);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.72 0.19 40 / 55%);
+
+  background-color: oklch(0.145 0 0);
+  color: oklch(0.975 0 0);
+}
+
+[data-phoenix-dashboard] *::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+[data-phoenix-dashboard] *::-webkit-scrollbar-track {
+  background: transparent;
+}
+[data-phoenix-dashboard] *::-webkit-scrollbar-thumb {
+  background: oklch(1 0 0 / 10%);
+  border-radius: 99px;
+}
+[data-phoenix-dashboard] *::-webkit-scrollbar-thumb:hover {
+  background: oklch(1 0 0 / 18%);
+}
+
+[data-phoenix-dashboard] button,
+[data-phoenix-dashboard] a,
+[data-phoenix-dashboard] input,
+[data-phoenix-dashboard] textarea,
+[data-phoenix-dashboard] select,
+[data-phoenix-dashboard] [role='button'] {
+  transition:
+    background-color 100ms ease-out,
+    color 100ms ease-out,
+    border-color 100ms ease-out,
+    box-shadow 100ms ease-out,
+    opacity 100ms ease-out,
+    transform 100ms ease-out !important;
+}
+
+@keyframes phx-row-in {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+[data-phoenix-dashboard] .row-in {
+  animation: phx-row-in 120ms ease-out both !important;
+}
+
+@keyframes phx-skel {
+  0% {
+    background-position: -160% 0;
+  }
+  100% {
+    background-position: 160% 0;
+  }
+}
+[data-phoenix-dashboard] .skel-bar {
+  display: block;
+  height: 10px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    oklch(1 0 0 / 4%) 0%,
+    oklch(1 0 0 / 9%) 40%,
+    oklch(1 0 0 / 4%) 80%
+  );
+  background-size: 200% 100%;
+  animation: phx-skel 1.2s linear infinite;
+}
+
+@keyframes phx-menu-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+[data-phoenix-dashboard] .phx-menu-in,
+.phx-menu-in {
+  animation: phx-menu-in 90ms ease-out both;
+  transform-origin: top right;
+}
+
+@keyframes phx-dialog-in {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.phx-dialog-in {
+  animation: phx-dialog-in 120ms ease-out both;
+}
+
+[data-phoenix-dashboard] .phx-tab-glow {
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out;
+}

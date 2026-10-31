@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{C4D71E88-0E51-4B32-90D1-8C7B6E1F4A22}</ProjectGuid>
+    <RootNamespace>Updater</RootNamespace>
+    <ProjectName>Updater</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <TargetName>Updater</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Label="OllvmPaths">
+    <PhoenixConfigPath>$(ProjectDir)..\driver\shared\config.hpp</PhoenixConfigPath>
+    <PhoenixConfigText Condition="Exists('$(PhoenixConfigPath)')">$([System.IO.File]::ReadAllText('$(PhoenixConfigPath)'))</PhoenixConfigText>
+    <PhoenixEnvLocal>$([System.Text.RegularExpressions.Regex]::IsMatch($(PhoenixConfigText), '(?m)^\s*#\s*define\s+KG_ENV_LOCAL\s+1\b'))</PhoenixEnvLocal>
+    <EnableOllvm Condition="'$(EnableOllvm)'==''">true</EnableOllvm>
+    <OllvmRoot>C:\Tools\OLLVM\build_ninja</OllvmRoot>
+    <OllvmBin>$(OllvmRoot)\bin</OllvmBin>
+    <OllvmClangCL>$(OllvmBin)\clang-cl.exe</OllvmClangCL>
+    <OllvmCompatFlags>-Wno-unused-command-line-argument -Wno-unknown-argument -Wno-microsoft-anon-tag -Wno-microsoft-enum-forward-reference -Wno-ignored-attributes -Wno-nonportable-include-path -Wno-invalid-token-paste -Wno-pragma-pack -Wno-int-to-void-pointer-cast -Wno-c++11-narrowing -Wno-microsoft-cast -Wno-microsoft-goto -Wno-microsoft-enum-value -Wno-ignored-pragma-intrinsic -Wno-unknown-pragmas -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-cast-function-type-mismatch -Wno-writable-strings -Wno-format-security</OllvmCompatFlags>
+    <OllvmPasses>/clang:-mllvm /clang:-irobf-cff /clang:-mllvm /clang:-irobf-indbr /clang:-mllvm /clang:-irobf-icall /clang:-mllvm /clang:-irobf-indgv /clang:-mllvm /clang:-irobf-cie /clang:-mllvm /clang:-irobf-cfe</OllvmPasses>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\debug\</OutDir>
+    <IntDir>$(SolutionDir)bin\debug\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\release\</OutDir>
+    <IntDir>$(SolutionDir)bin\release\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\client\vendor;$(ProjectDir)..\driver\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>bcrypt.lib;advapi32.lib;user32.lib;shell32.lib;ntdll.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\client\vendor;$(ProjectDir)..\driver\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>bcrypt.lib;advapi32.lib;user32.lib;shell32.lib;ntdll.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="net\net.cpp" />
+    <ClCompile Include="crypto\crypto.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gate\gate.hpp" />
+    <ClInclude Include="net\net.hpp" />
+    <ClInclude Include="crypto\crypto.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <Target Name="DiagOllvmPath" BeforeTargets="ClCompile">
+    <Message Importance="high" Text="[OLLVM/diag] OllvmClangCL = $(OllvmClangCL)" />
+    <Message Importance="high" Text="[OLLVM/diag] Exists() at target-time = $([System.IO.File]::Exists('$(OllvmClangCL)'))" />
+  </Target>
+  <Target Name="PhoenixEnvBanner" BeforeTargets="ClCompile">
+    <Message Importance="high" Text="[Phoenix/Updater] KG_ENV_LOCAL=$(PhoenixEnvLocal), EnableOllvm=$(EnableOllvm)" />
+  </Target>
+  <Target Name="ApplyOllvmCompiler" BeforeTargets="ClCompile" Condition="'$(EnableOllvm)'=='true' AND Exists('$(OllvmClangCL)')">
+    <Message Importance="high" Text="[OLLVM] using $(OllvmClangCL) with passes: $(OllvmPasses)" />
+    <PropertyGroup>
+      <CLToolExe>clang-cl.exe</CLToolExe>
+      <CLToolPath>$(OllvmBin)</CLToolPath>
+    </PropertyGroup>
+    <ItemGroup>
+      <ClCompile>
+        <AdditionalOptions>%(ClCompile.AdditionalOptions) $(OllvmCompatFlags) $(OllvmPasses)</AdditionalOptions>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+  <Target Name="WarnOllvmMissing" BeforeTargets="ClCompile" Condition="'$(EnableOllvm)'=='true' AND !Exists('$(OllvmClangCL)')">
+    <Message Importance="high" Text="[OLLVM] $(OllvmClangCL) not found — falling back to MSVC cl.exe, no obfuscation passes applied" />
+  </Target>
+</Project>

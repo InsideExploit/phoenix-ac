@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BB18DB24-CE1E-9274-3B87-58455650E58E}</ProjectGuid>
+    <TemplateGuid>{1bc93793-694f-48fe-9372-81e2b05556fd}</TemplateGuid>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <Configuration>Release</Configuration>
+    <Platform Condition="'$(Platform)' == ''">x64</Platform>
+    <RootNamespace>PhoenixDrv</RootNamespace>
+    <ProjectName>PhoenixDrv</ProjectName>
+    <TargetName>PhoenixDrv</TargetName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>WDM</DriverType>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>WDM</DriverType>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\debug\</OutDir>
+    <IntDir>$(SolutionDir)bin\debug\obj\$(ProjectName)\</IntDir>
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\release\</OutDir>
+    <IntDir>$(SolutionDir)bin\release\obj\$(ProjectName)\</IntDir>
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <EnableInf2cat>false</EnableInf2cat>
+  </PropertyGroup>
+  <PropertyGroup Label="OllvmPaths">
+    <PhoenixConfigPath>$(MSBuildThisFileDirectory)shared\config.hpp</PhoenixConfigPath>
+    <PhoenixConfigText Condition="Exists('$(PhoenixConfigPath)')">$([System.IO.File]::ReadAllText('$(PhoenixConfigPath)'))</PhoenixConfigText>
+    <PhoenixEnvLocal>$([System.Text.RegularExpressions.Regex]::IsMatch($(PhoenixConfigText), '(?m)^\s*#\s*define\s+KG_ENV_LOCAL\s+1\b'))</PhoenixEnvLocal>
+    <EnableOllvm Condition="'$(EnableOllvm)'==''">true</EnableOllvm>
+    <OllvmRoot>C:\Tools\OLLVM\build_ninja</OllvmRoot>
+    <OllvmBin>$(OllvmRoot)\bin</OllvmBin>
+    <OllvmClangCL>$(OllvmBin)\clang-cl.exe</OllvmClangCL>
+    <OllvmCompatFlags>-Wno-unused-command-line-argument -Wno-unknown-argument -Wno-microsoft-anon-tag -Wno-microsoft-enum-forward-reference -Wno-ignored-attributes -Wno-nonportable-include-path -Wno-invalid-token-paste -Wno-pragma-pack -Wno-int-to-void-pointer-cast -Wno-c++11-narrowing -Wno-microsoft-cast -Wno-microsoft-goto -Wno-microsoft-enum-value -Wno-ignored-pragma-intrinsic -Wno-unknown-pragmas -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-cast-function-type-mismatch -Wno-writable-strings -Wno-format-security</OllvmCompatFlags>
+    <OllvmPasses>/clang:-mllvm /clang:-irobf-cff /clang:-mllvm /clang:-irobf-icall /clang:-mllvm /clang:-irobf-cie</OllvmPasses>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <PreprocessorDefinitions>_DEBUG;POOL_NX_OPTIN=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(DDK_LIB_PATH)\ksecdd.lib;$(DDK_LIB_PATH)\ntstrsafe.lib;$(DDK_LIB_PATH)\fwpkclnt.lib;$(DDK_LIB_PATH)\netio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+      <IntegrityCheck>true</IntegrityCheck>
+      <AdditionalOptions>/INTEGRITYCHECK /DEBUG:NONE %(AdditionalOptions)</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateMapFile>false</GenerateMapFile>
+    </Link>
+    <DriverSign>
+      <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
+      <SignMode>TestSign</SignMode>
+      <TestCertificate>$(WDKContentRoot)tools\WDKTestCert.cer</TestCertificate>
+    </DriverSign>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <PreprocessorDefinitions>NDEBUG;POOL_NX_OPTIN=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(DDK_LIB_PATH)\ksecdd.lib;$(DDK_LIB_PATH)\ntstrsafe.lib;$(DDK_LIB_PATH)\fwpkclnt.lib;$(DDK_LIB_PATH)\netio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+      <IntegrityCheck>true</IntegrityCheck>
+      <AdditionalOptions>/INTEGRITYCHECK /DEBUG:NONE /EMITPOGOPHASEINFO- %(AdditionalOptions)</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateMapFile>false</GenerateMapFile>
+    </Link>
+    <DriverSign>
+      <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
+      <SignMode>TestSign</SignMode>
+      <TestCertificate>$(WDKContentRoot)tools\WDKTestCert.cer</TestCertificate>
+    </DriverSign>
+    <PostBuildEvent>
+      <Command>if not exist "$(ProjectDir)..\..\backend\artifacts\" mkdir "$(ProjectDir)..\..\backend\artifacts\"
+copy /y "$(TargetPath)" "$(ProjectDir)..\..\backend\artifacts\PhoenixDrv.sys"</Command>
+      <Message>Staging PhoenixDrv.sys to backend\artifacts\</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="comm\comm.cpp" />
+    <ClCompile Include="protect\protect.cpp" />
+    <ClCompile Include="checks\checks.cpp" />
+    <ClCompile Include="crypto\crypto.cpp" />
+    <ClCompile Include="steam\steam.cpp" />
+    <ClCompile Include="vm\vm.cpp" />
+    <ClCompile Include="mem\mem.cpp" />
+    <ClCompile Include="blocklist\blocklist.cpp" />
+    <ClCompile Include="hwid\hwid.cpp" />
+    <ClCompile Include="blockdrv\blockdrv.cpp" />
+    <ClCompile Include="regfilter\regfilter.cpp" />
+    <ClCompile Include="wfp\wfp.cpp" />
+    <ClCompile Include="integrity\integrity.cpp" />
+    <ClCompile Include="win32k\win32k.cpp" />
+    <ClCompile Include="mmap\mmap.cpp" />
+    <ClCompile Include="irpscan\irpscan.cpp" />
+    <ClCompile Include="stackattach\stackattach.cpp" />
+    <ClCompile Include="inject\inject.cpp" />
+    <ClCompile Include="ptrcrypt\ptrcrypt.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="win32k\win32k_call.asm" />
+    <MASM Include="checks\checks_asm.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="comm\comm.hpp" />
+    <ClInclude Include="protect\protect.hpp" />
+    <ClInclude Include="checks\checks.hpp" />
+    <ClInclude Include="crypto\crypto.hpp" />
+    <ClInclude Include="steam\steam.hpp" />
+    <ClInclude Include="vm\vm.hpp" />
+    <ClInclude Include="mem\mem.hpp" />
+    <ClInclude Include="blocklist\blocklist.hpp" />
+    <ClInclude Include="hwid\hwid.hpp" />
+    <ClInclude Include="shared\config.hpp" />
+    <ClInclude Include="shared\shared.hpp" />
+    <ClInclude Include="shared\klazy.hpp" />
+    <ClInclude Include="shared\pxstr.hpp" />
+    <ClInclude Include="blockdrv\blockdrv.hpp" />
+    <ClInclude Include="regfilter\regfilter.hpp" />
+    <ClInclude Include="wfp\wfp.hpp" />
+    <ClInclude Include="integrity\integrity.hpp" />
+    <ClInclude Include="win32k\win32k.hpp" />
+    <ClInclude Include="mmap\mmap.hpp" />
+    <ClInclude Include="irpscan\irpscan.hpp" />
+    <ClInclude Include="stackattach\stackattach.hpp" />
+    <ClInclude Include="inject\inject.hpp" />
+    <ClInclude Include="ptrcrypt\ptrcrypt.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="blockdrv\blockdrv_md5.inl" />
+    <None Include="strip-pdb.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="driver.inf" />
+  </ItemGroup>
+  <ItemGroup>
+    <FilesToPackage Include="$(TargetPath)" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+  </ImportGroup>
+  <Target Name="DiagOllvmPath" BeforeTargets="ClCompile">
+    <Message Importance="high" Text="[OLLVM/diag] OllvmRoot   = $(OllvmRoot)" />
+    <Message Importance="high" Text="[OLLVM/diag] OllvmBin    = $(OllvmBin)" />
+    <Message Importance="high" Text="[OLLVM/diag] OllvmClangCL = $(OllvmClangCL)" />
+    <Message Importance="high" Text="[OLLVM/diag] Exists() at target-time = $([System.IO.File]::Exists('$(OllvmClangCL)'))" />
+  </Target>
+  <Target Name="PhoenixEnvBanner" BeforeTargets="ClCompile">
+    <Message Importance="high" Text="[Phoenix] KG_ENV_LOCAL=$(PhoenixEnvLocal), EnableOllvm=$(EnableOllvm)" />
+  </Target>
+  <Target Name="ApplyOllvmCompiler" BeforeTargets="ClCompile" Condition="'$(EnableOllvm)'=='true' AND Exists('$(OllvmClangCL)')">
+    <Message Importance="high" Text="[OLLVM] using $(OllvmClangCL) with passes: $(OllvmPasses)" />
+    <PropertyGroup>
+      <CLToolExe>clang-cl.exe</CLToolExe>
+      <CLToolPath>$(OllvmBin)</CLToolPath>
+    </PropertyGroup>
+    <ItemGroup>
+      <ClCompile>
+        <AdditionalOptions>%(ClCompile.AdditionalOptions) $(OllvmCompatFlags) $(OllvmPasses)</AdditionalOptions>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+  <Target Name="StripPdbFromDriver" AfterTargets="Link" BeforeTargets="Sign;SignDriverPackage;SignDriverFile;_SignDriverFile" Condition="'$(Configuration)'=='Release'">
+    <Message Importance="high" Text="[strip-pdb] scrubbing debug directory from $(TargetPath)" />
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(ProjectDir)strip-pdb.ps1&quot; -Path &quot;$(TargetPath)&quot;" />
+  </Target>
+  <Target Name="WarnOllvmMissing" BeforeTargets="ClCompile" Condition="'$(EnableOllvm)'=='true' AND !Exists('$(OllvmClangCL)')">
+    <Message Importance="high" Text="[OLLVM] $(OllvmClangCL) not found — falling back to MSVC cl.exe, no obfuscation passes applied" />
+  </Target>
+</Project>

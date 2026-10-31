@@ -1,0 +1,4 @@
+-- Schema ownership moved to the backend service.
+-- Canonical migrations live in: backend/src/db/migrate.ts (executed at backend
+-- startup) and backend/sql/schema.sql (reference dump). This file is retained
+-- as a placeholder only. Do not run.
